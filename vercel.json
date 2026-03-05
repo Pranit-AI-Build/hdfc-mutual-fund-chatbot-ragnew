@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "Phase4/backend/app.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "Phase4/frontend/package.json",
+      "use": "@vercel/static-build"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "Phase4/backend/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "Phase4/frontend/$1"
+    }
+  ],
+  "env": {
+    "GROQ_API_KEY": "@groq_api_key"
+  }
+}

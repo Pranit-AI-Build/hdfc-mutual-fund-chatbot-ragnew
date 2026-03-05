@@ -1,0 +1,289 @@
+[
+  {
+    "fund_name": "HDFC Banking & Financial Services Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-banking-financial-services-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.80%",
+    "risk_level": null,
+    "fund_managers": [],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "18.85%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC Small Cap Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-small-cap-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.73%",
+    "risk_level": null,
+    "fund_managers": [
+      "Chirag Setalvad"
+    ],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "4.79%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC Flexi Cap Direct Plan Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-equity-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.70%",
+    "risk_level": null,
+    "fund_managers": [],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "8.90%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC NIFTY Next 50 Index Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-nifty-next-50-index-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.30%",
+    "risk_level": null,
+    "fund_managers": [],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "5.10%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC Large and Mid Cap Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-large-and-mid-cap-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.86%",
+    "risk_level": null,
+    "fund_managers": [],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "4.83%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC ELSS Tax Saver Fund Direct Plan Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-elss-tax-saver-fund-direct-plan-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "1.08%",
+    "risk_level": null,
+    "fund_managers": [],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "9.21%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC Large Cap Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-large-cap-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "1.01%",
+    "risk_level": null,
+    "fund_managers": [
+      "Rahul Baijal"
+    ],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "9.31%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC Defence Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-defence-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.82%",
+    "risk_level": null,
+    "fund_managers": [
+      "Rahul Baijal"
+    ],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "19.49%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  },
+  {
+    "fund_name": "HDFC Mid Cap Fund Direct Growth",
+    "source_url": "https://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
+    "nav": null,
+    "nav_date": null,
+    "minimum_sip": null,
+    "fund_size": null,
+    "expense_ratio": "0.76%",
+    "risk_level": null,
+    "fund_managers": [
+      "Chirag Setalvad"
+    ],
+    "returns": {
+      "6_months": null,
+      "1_year": null,
+      "3_year": null,
+      "5_year": null
+    },
+    "top_holdings": [],
+    "holding_analysis": {
+      "by_sector": [],
+      "by_market_cap": [],
+      "by_asset_class": [
+        {
+          "type": "Equity",
+          "percentage": "4.51%"
+        }
+      ],
+      "raw_text": null
+    },
+    "exit_load": null,
+    "tax_info": null
+  }
+]
