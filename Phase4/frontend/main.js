@@ -3,152 +3,156 @@ const API_URL = window.location.hostname === 'localhost'
   ? "http://localhost:8000/chat"
   : "https://hdfc-mutual-fund-chatbot-backend.onrender.com/chat";
 
-const starterQuestions = [
-  "What is the current NAV of HDFC Small Cap Fund Direct Growth?",
-  "Can you tell me the exit load for HDFC Small Cap Fund Direct Growth?",
-  "What is the minimum SIP amount for HDFC Banking & Financial Services Fund Direct Growth?",
+const suggestionQuestions = [
+  {
+    text: "What is the NAV of HDFC Banking & Financial Services Fund Direct Growth?",
+    icon: "📊",
+    color: "purple"
+  },
+  {
+    text: "What is the exit load for HDFC Flexi Cap Direct Plan Growth?",
+    icon: "⚖️",
+    color: "blue"
+  },
+  {
+    text: "What is the minimum amount for SIP in HDFC NIFTY Next 50 Index Fund Direct Growth?",
+    icon: "💰",
+    color: "pink"
+  }
 ];
 
 function createMessageRow(message, role, source) {
   const row = document.createElement("div");
   row.className = `message-row ${role}`;
 
+  const avatar = document.createElement("div");
+  avatar.className = `message-avatar ${role}`;
+  avatar.textContent = role === "user" ? "👤" : "🤖";
+
   const bubble = document.createElement("div");
   bubble.className = "message-bubble";
-
-  if (role === "bot" && source) {
-    const title = document.createElement("div");
-    title.className = "bot-title";
-    title.textContent = source;
-    bubble.appendChild(title);
+  
+  if (role === "bot" && message) {
+    // Parse markdown-like bold text
+    let formattedMessage = message
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    
+    // Check if message has bullet points
+    if (message.includes('•') || message.includes('- ')) {
+      formattedMessage = formattedMessage.replace(/•\s(.*?)(?=<br>|$)/g, '<li>$1</li>');
+      if (formattedMessage.includes('<li>')) {
+        formattedMessage = '<ul>' + formattedMessage + '</ul>';
+      }
+    }
+    
+    bubble.innerHTML = formattedMessage;
+    
+    // Add source citation if available
+    if (source) {
+      const citation = document.createElement("div");
+      citation.className = "source-citation";
+      citation.innerHTML = `<span class="source-icon">🔗</span> <a href="${source}" target="_blank" class="source-link">${source}</a>`;
+      bubble.appendChild(citation);
+    }
+  } else {
+    bubble.textContent = message;
   }
 
-  const text = document.createElement("div");
-  text.textContent = message;
-  bubble.appendChild(text);
-
+  row.appendChild(avatar);
   row.appendChild(bubble);
   return row;
 }
 
 function renderApp() {
   const root = document.getElementById("root");
+  
+  // Create app shell
   const shell = document.createElement("div");
   shell.className = "app-shell";
 
-  const card = document.createElement("div");
-  card.className = "chat-card";
-
   // Header
-  const header = document.createElement("div");
+  const header = document.createElement("header");
   header.className = "chat-header";
-
+  
   const brand = document.createElement("div");
   brand.className = "brand";
-  const logo = document.createElement("div");
-  logo.className = "brand-logo";
-  logo.textContent = "H";
-  const brandText = document.createElement("div");
-  brandText.className = "brand-text";
-  const brandTitle = document.createElement("div");
-  brandTitle.className = "brand-title";
-  brandTitle.textContent = "HDFC CHATBOT";
-  const brandSubtitle = document.createElement("div");
-  brandSubtitle.className = "brand-subtitle";
-  brandSubtitle.textContent = "RAG ENGINE V2.0";
-  brandText.appendChild(brandTitle);
-  brandText.appendChild(brandSubtitle);
-  brand.appendChild(logo);
-  brand.appendChild(brandText);
-
-  const headerActions = document.createElement("div");
-  headerActions.className = "header-actions";
-  const statusPill = document.createElement("div");
-  statusPill.className = "pill";
-  statusPill.textContent = "Safe, data-backed answers only";
-  headerActions.appendChild(statusPill);
-
+  brand.innerHTML = `
+    <div class="brand-logo">H</div>
+    <div class="brand-text">
+      <div class="brand-title">HDFC CHATBOT</div>
+      <div class="brand-subtitle">RAG ENGINE V2.0</div>
+    </div>
+  `;
+  
   header.appendChild(brand);
-  header.appendChild(headerActions);
 
-  // Main
-  const main = document.createElement("div");
+  // Main content
+  const main = document.createElement("main");
   main.className = "chat-main";
 
+  // Hero section
   const hero = document.createElement("div");
   hero.className = "chat-hero";
-  const title = document.createElement("div");
-  title.className = "chat-title";
-  title.textContent = "How can I help you today?";
-  const subtitle = document.createElement("div");
-  subtitle.className = "chat-subtitle";
-  subtitle.textContent =
-    "I'm your HDFC Mutual Fund assistant. Ask me anything about our funds, NAVs, or exit loads.";
-  hero.appendChild(title);
-  hero.appendChild(subtitle);
+  hero.innerHTML = `
+    <h1 class="chat-title">How can I help you today?</h1>
+    <p class="chat-subtitle"><strong>I'm your HDFC Mutual Fund assistant.</strong></p>
+    <p class="chat-disclaimer">Facts-only. No investment advice</p>
+  `;
 
-  const chipsRow = document.createElement("div");
-  chipsRow.className = "chips-row";
-  starterQuestions.forEach((q) => {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "chip";
-    const icon = document.createElement("div");
-    icon.className = "chip-icon";
-    icon.textContent = "⟲";
-    const label = document.createElement("span");
-    label.textContent = q;
-    chip.appendChild(icon);
-    chip.appendChild(label);
-    chip.addEventListener("click", () => {
-      input.value = q;
+  // Suggestions
+  const suggestionsRow = document.createElement("div");
+  suggestionsRow.className = "suggestions-row";
+  
+  suggestionQuestions.forEach(q => {
+    const card = document.createElement("div");
+    card.className = "suggestion-card";
+    card.innerHTML = `
+      <div class="suggestion-icon ${q.color}">${q.icon}</div>
+      <div class="suggestion-text">${q.text}</div>
+    `;
+    card.addEventListener("click", () => {
+      input.value = q.text;
       input.focus();
     });
-    chipsRow.appendChild(chip);
+    suggestionsRow.appendChild(card);
   });
 
-  const chatWindow = document.createElement("div");
-  chatWindow.className = "chat-window";
+  // Chat container
+  const chatContainer = document.createElement("div");
+  chatContainer.className = "chat-container";
+
   const messages = document.createElement("div");
   messages.className = "messages";
 
-  const inputRow = document.createElement("div");
-  inputRow.className = "chat-input-row";
+  // Input area
+  const inputContainer = document.createElement("div");
+  inputContainer.className = "input-container";
+  inputContainer.innerHTML = `
+    <div class="input-wrapper">
+      <input type="text" placeholder="Ask about funds..." />
+      <div class="input-actions">
+        <button class="send-btn">➤</button>
+      </div>
+    </div>
+    <p class="footer-note">AI can make mistakes. Please verify important information.</p>
+  `;
 
-  const inputShell = document.createElement("div");
-  inputShell.className = "input-shell";
-  const input = document.createElement("input");
-  input.type = "text";
-  input.placeholder = "Ask about funds...";
-  inputShell.appendChild(input);
+  const input = inputContainer.querySelector("input");
+  const sendBtn = inputContainer.querySelector(".send-btn");
 
-  const sendButton = document.createElement("button");
-  sendButton.type = "button";
-  sendButton.className = "send-button";
-  sendButton.textContent = "➤";
-
-  inputRow.appendChild(inputShell);
-  inputRow.appendChild(sendButton);
-
-  const footerNote = document.createElement("div");
-  footerNote.className = "footer-note";
-  footerNote.textContent =
-    "AI can make mistakes. Information is based only on approved public fund data and is not investment advice.";
-
-  chatWindow.appendChild(messages);
-  chatWindow.appendChild(inputRow);
-  chatWindow.appendChild(footerNote);
+  chatContainer.appendChild(messages);
+  chatContainer.appendChild(inputContainer);
 
   main.appendChild(hero);
-  main.appendChild(chipsRow);
-  main.appendChild(chatWindow);
+  main.appendChild(suggestionsRow);
+  main.appendChild(chatContainer);
 
-  card.appendChild(header);
-  card.appendChild(main);
-  shell.appendChild(card);
+  shell.appendChild(header);
+  shell.appendChild(main);
   root.appendChild(shell);
 
-  // Chat behaviour
+  // Chat functionality
   let isSending = false;
 
   async function sendMessage() {
@@ -157,11 +161,16 @@ function renderApp() {
     if (!text) return;
     isSending = true;
 
+    // Hide hero and suggestions after first message
+    hero.style.display = "none";
+    suggestionsRow.style.display = "none";
+
     messages.appendChild(createMessageRow(text, "user"));
     messages.scrollTop = messages.scrollHeight;
     input.value = "";
 
-    const thinkingRow = createMessageRow("Thinking...", "bot", "Assistant");
+    const thinkingRow = createMessageRow("Thinking...", "bot");
+    thinkingRow.querySelector(".message-bubble").classList.add("thinking");
     messages.appendChild(thinkingRow);
     messages.scrollTop = messages.scrollHeight;
 
@@ -173,16 +182,19 @@ function renderApp() {
       });
       const data = await res.json();
       messages.removeChild(thinkingRow);
-      const label = data.fund_name || "Assistant";
-      messages.appendChild(createMessageRow(data.answer, "bot", label));
+      
+      // Use source URL from data
+      let source = data.source_url || "";
+      let answer = data.answer;
+      
+      messages.appendChild(createMessageRow(answer, "bot", source));
       messages.scrollTop = messages.scrollHeight;
     } catch (e) {
       messages.removeChild(thinkingRow);
       messages.appendChild(
         createMessageRow(
           "Sorry, something went wrong while contacting the server.",
-          "bot",
-          "Assistant",
+          "bot"
         ),
       );
       messages.scrollTop = messages.scrollHeight;
@@ -191,7 +203,7 @@ function renderApp() {
     }
   }
 
-  sendButton.addEventListener("click", sendMessage);
+  sendBtn.addEventListener("click", sendMessage);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -201,4 +213,3 @@ function renderApp() {
 }
 
 document.addEventListener("DOMContentLoaded", renderApp);
-
