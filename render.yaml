@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: hdfc-mutual-fund-chatbot-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn Phase4.backend.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /health
+
+  - type: static
+    name: hdfc-mutual-fund-chatbot-frontend
+    plan: free
+    buildCommand: echo "No build needed for static site"
+    staticPublishPath: ./Phase4/frontend
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

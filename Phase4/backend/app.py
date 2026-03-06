@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FUNDS_PATH = os.path.join(BASE_DIR, "Phase2", "data", "funds.jsonl")
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -80,60 +80,21 @@ def contains_pii(text: str) -> bool:
 
 
 def find_best_fund(query: str) -> Optional[Dict[str, Any]]:
-    query_lower = query.lower().strip()
+    query_lower = query.lower()
     best: Optional[Dict[str, Any]] = None
-    best_score = -1
-    
-    # Define stop words that shouldn't contribute to matching
-    stop_words = {'hdfc', 'fund', 'direct', 'growth', 'mutual', 'the', 'of', 'a', 'an', 'give', 'me', 'nav', 'what', 'is', 'get', 'tell', 'about'}
-    
-    # Extract meaningful keywords from query
-    query_keywords = [w for w in query_lower.split() if w not in stop_words]
-    
+    best_score = 0
     for fund in get_funds():
         name = (fund.get("fund_name") or "").lower()
         if not name:
             continue
-        
-        # Remove stop words from fund name for comparison
-        name_words = [w for w in name.split() if w not in stop_words]
-        name_clean = " ".join(name_words)
-        
-        score = 0
-        
-        # Check for exact consecutive phrase matches
-        query_clean = " ".join(query_keywords)
-        if query_clean in name_clean:
-            # Exact phrase match - highest score
-            score = 1000 + len(query_clean) * 10
+        if query_lower in name:
+            score = len(query)
         else:
-            # Check for keyword matches in order
-            match_count = 0
-            last_match_idx = -1
-            
-            for kw in query_keywords:
-                try:
-                    idx = name_words.index(kw, last_match_idx + 1)
-                    if last_match_idx == -1 or idx == last_match_idx + 1:
-                        # Consecutive match
-                        match_count += 2
-                    else:
-                        # Non-consecutive match
-                        match_count += 1
-                    last_match_idx = idx
-                except ValueError:
-                    pass
-            
-            score = match_count * 10
-        
-        # Penalize if fund name has extra keywords not in query
-        extra_words = len(set(name_words) - set(query_keywords))
-        score -= extra_words * 5
-        
+            # basic token overlap score
+            score = len(set(query_lower.split()) & set(name.split()))
         if score > best_score:
             best_score = score
             best = fund
-    
     return best
 
 
@@ -147,56 +108,7 @@ def build_context_for_fund(fund: Dict[str, Any]) -> str:
         f"Risk level: {fund.get('risk_level')}",
         f"Exit load: {fund.get('exit_load')}",
     ]
-    
-    # Add returns data if available
-    returns = fund.get('returns', {})
-    if returns:
-        returns_parts = []
-        if returns.get('6_months'):
-            returns_parts.append(f"6 months: {returns['6_months']}")
-        if returns.get('1_year'):
-            returns_parts.append(f"1 year: {returns['1_year']}")
-        if returns.get('3_year'):
-            returns_parts.append(f"3 years: {returns['3_year']}")
-        if returns.get('5_year'):
-            returns_parts.append(f"5 years: {returns['5_year']}")
-        if returns_parts:
-            parts.append("Returns: " + ", ".join(returns_parts))
-    
     return "\n".join(str(p) for p in parts if p is not None)
-
-
-def is_out_of_scope(message: str) -> bool:
-    """Check if question is outside HDFC Mutual Fund scope."""
-    message_lower = message.lower()
-    
-    # Check for sensitive/PII keywords
-    sensitive_keywords = ['otp', 'password', 'pin', 'login', 'sign in', 'my account', 'portfolio']
-    for kw in sensitive_keywords:
-        if kw in message_lower:
-            return True
-    
-    # Check for other AMCs
-    other_amcs = ['sbi', 'icici', 'axis', 'kotak', 'nippon', 'uti', 'dsp', 'franklin', 'tata', 'canara']
-    for amc in other_amcs:
-        if amc in message_lower:
-            return True
-    
-    # Check for non-mutual fund topics
-    non_mf_topics = ['stock', 'share', 'crypto', 'bitcoin', 'fixed deposit', 'fd', 'ppf', 'nps', 'real estate', 'gold']
-    for topic in non_mf_topics:
-        if topic in message_lower:
-            return True
-    
-    # Check if message contains any fund-related keywords
-    fund_keywords = ['nav', 'expense', 'exit load', 'sip', 'lock-in', 'benchmark', 'riskometer', 'fund', 'scheme', 'hdfc']
-    has_fund_keyword = any(kw in message_lower for kw in fund_keywords)
-    
-    # If no fund keywords, it's out of scope
-    if not has_fund_keyword:
-        return True
-    
-    return False
 
 
 def call_groq(prompt: str, context: str) -> str:
@@ -217,22 +129,15 @@ def call_groq(prompt: str, context: str) -> str:
             {
                 "role": "system",
                 "content": (
-                    "You are a strict FAQ assistant for HDFC Mutual Fund. "
-                    "You can ONLY answer factual questions about HDFC Mutual Fund schemes, such as: "
-                    "NAV, Expense Ratio, Exit Load, Minimum SIP, Lock-in period, Benchmark, Riskometer, "
-                    "How to download statements, Rules. "
-                    "If the user asks anything outside these topics, reply exactly with: "
-                    "I can only give answers related to HDFC Mutual Fund schemes. "
-                    "If the user asks for or provides personal or sensitive information, including: "
-                    "PAN, Aadhaar, Account numbers, OTPs, Emails, Phone numbers, "
-                    "reply exactly with: "
-                    "I can only give answers related to HDFC Mutual Fund schemes. "
-                    "Do NOT compute, compare, or analyze returns. "
-                    "If asked to do so, reply exactly with: "
-                    "I can only give answers related to HDFC Mutual Fund schemes. "
-                    "Keep answers short, factual, and limited to scheme information only. "
+                    "You are an HDFC Mutual Fund assistant. "
                     "You must answer ONLY using the structured context provided. "
                     "Do not use any external knowledge or live data. "
+                    "Do NOT accept, store, or repeat personal identifiers such as "
+                    "PAN, Aadhaar, account numbers, OTPs, phone numbers, or emails. "
+                    "Do NOT compute or compare returns or performance; if asked for "
+                    "detailed performance, direct the user to the official factsheet URL "
+                    "contained in the context. "
+                    "Keep answers under 3 sentences. "
                     "Do not provide investment advice or recommendations."
                 ),
             },
@@ -260,41 +165,38 @@ def chat(req: ChatRequest) -> ChatResponse:
     if not message:
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
-    # Check for PII
     if contains_pii(message):
-        return ChatResponse(
-            answer="I can only give answers related to HDFC Mutual Fund schemes.",
-            fund_name=None,
-            source_url=None,
-            nav_date=None
+        safe_text = (
+            "I’m not allowed to process personal identifiers such as PAN, "
+            "Aadhaar, account numbers, OTPs, emails, or phone numbers. "
+            "Please ask a general question about our mutual funds instead."
         )
-
-    # Check for out-of-scope questions
-    if is_out_of_scope(message):
-        return ChatResponse(
-            answer="I can only give answers related to HDFC Mutual Fund schemes.",
-            fund_name=None,
-            source_url=None,
-            nav_date=None
-        )
+        return ChatResponse(answer=safe_text, fund_name=None, source_url=None, nav_date=None)
 
     fund = find_best_fund(message)
     if not fund:
-        # Check if it's a general question about statements or rules
-        message_lower = message.lower()
-        if 'statement' in message_lower or 'download' in message_lower:
-            return ChatResponse(
-                answer="You can download statements from the HDFC Mutual Fund website by logging into your account and navigating to the 'Statements' section.",
-                fund_name=None,
-                source_url="https://www.hdfcfund.com",
-                nav_date=None
-            )
-        # Otherwise, it's out of scope
+        answer = (
+            "I could not identify a specific HDFC fund from your question. "
+            "Please include the full fund name from our scheme list."
+        )
+        return ChatResponse(answer=answer, fund_name=None, source_url=None, nav_date=None)
+
+    # Enforce no performance calculations: if question focuses on returns/performance,
+    # direct user to the official source instead of asking LLM to compute anything.
+    if re.search(r"\b(return|performance|CAGR|XIRR)\b", message, re.IGNORECASE):
+        source_url = fund.get("source_url")
+        nav_date = fund.get("nav_date")
+        fund_name = fund.get("fund_name")
+        answer = (
+            f"For {fund_name}, performance details are available in the official factsheet "
+            f"and AMC disclosures. Please refer to the latest document on the source site."
+        )
+        footer = f" Last updated: {nav_date or 'N/A'} (Source: {source_url or 'N/A'})."
         return ChatResponse(
-            answer="I can only give answers related to HDFC Mutual Fund schemes.",
-            fund_name=None,
-            source_url=None,
-            nav_date=None
+            answer=answer + footer,
+            fund_name=fund_name,
+            source_url=source_url,
+            nav_date=nav_date,
         )
 
     context = build_context_for_fund(fund)
@@ -306,10 +208,10 @@ def chat(req: ChatRequest) -> ChatResponse:
 
     source_url = fund.get("source_url")
     nav_date = fund.get("nav_date")
-    
-    # Return answer without source - frontend will add it
+    footer = f" Last updated: {nav_date or 'N/A'} (Source: {source_url or 'N/A'})."
+
     return ChatResponse(
-        answer=trimmed,
+        answer=trimmed + footer,
         fund_name=fund.get("fund_name"),
         source_url=source_url,
         nav_date=nav_date,
@@ -319,8 +221,4 @@ def chat(req: ChatRequest) -> ChatResponse:
 @app.get("/health")
 def health() -> Dict[str, str]:
     return {"status": "ok"}
-
-
-# Vercel serverless handler
-# The app variable is already defined above for FastAPI
 
