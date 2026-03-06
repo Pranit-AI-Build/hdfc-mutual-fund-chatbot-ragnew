@@ -146,15 +146,15 @@ This project is for educational purposes.
 ### AMC Coverage
 - **Only HDFC Mutual Fund** schemes are supported
 - 9 schemes currently available:
-  - HDFC Banking & Financial Services Fund Direct Growth
-  - HDFC Small Cap Fund Direct Growth
-  - HDFC Flexi Cap Direct Plan Growth
-  - HDFC NIFTY Next 50 Index Fund Direct Growth
-  - HDFC Large and Mid Cap Fund Direct Growth
-  - HDFC ELSS Tax Saver Fund Direct Plan Growth
-  - HDFC Large Cap Fund Direct Growth
-  - HDFC Defence Fund Direct Growth
-  - HDFC Mid Cap Fund Direct Growth
+  - [HDFC Banking & Financial Services Fund Direct Growth](https://groww.in/mutual-funds/hdfc-banking-financial-services-fund-direct-growth)
+  - [HDFC Small Cap Fund Direct Growth](https://groww.in/mutual-funds/hdfc-small-cap-fund-direct-growth)
+  - [HDFC Flexi Cap Direct Plan Growth](https://groww.in/mutual-funds/hdfc-equity-fund-direct-growth)
+  - [HDFC NIFTY Next 50 Index Fund Direct Growth](https://groww.in/mutual-funds/hdfc-nifty-next-50-index-fund-direct-growth)
+  - [HDFC Large and Mid Cap Fund Direct Growth](https://groww.in/mutual-funds/hdfc-large-and-mid-cap-fund-direct-growth)
+  - [HDFC ELSS Tax Saver Fund Direct Plan Growth](https://groww.in/mutual-funds/hdfc-elss-tax-saver-fund-direct-plan-growth)
+  - [HDFC Large Cap Fund Direct Growth](https://groww.in/mutual-funds/hdfc-large-cap-fund-direct-growth)
+  - [HDFC Defence Fund Direct Growth](https://groww.in/mutual-funds/hdfc-defence-fund-direct-growth)
+  - [HDFC Mid Cap Fund Direct Growth](https://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth)
 
 ### Allowed Topics
 - NAV (Net Asset Value)
