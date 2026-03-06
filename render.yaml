@@ -15,7 +15,6 @@ services:
   - type: web
     name: hdfc-mutual-fund-chatbot-frontend
     runtime: static
-    plan: free
     buildCommand: echo "No build needed"
     staticPublishPath: ./Phase4/frontend
     routes:
