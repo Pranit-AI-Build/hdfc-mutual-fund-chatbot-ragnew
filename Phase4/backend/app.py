@@ -8,8 +8,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 
+# Handle both local and Render deployment paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FUNDS_PATH = os.path.join(BASE_DIR, "Phase2", "data", "funds.jsonl")
+
+# Fallback for Render deployment structure
+if not os.path.exists(FUNDS_PATH):
+    FUNDS_PATH = os.path.join(os.path.dirname(BASE_DIR), "Phase2", "data", "funds.jsonl")
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
