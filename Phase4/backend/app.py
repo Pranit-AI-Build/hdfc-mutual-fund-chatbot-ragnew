@@ -88,6 +88,12 @@ def is_out_of_scope(message: str) -> bool:
     """Check if question is outside HDFC Mutual Fund scope."""
     message_lower = message.lower()
     
+    # Check for recommendation/advice keywords
+    advice_keywords = ['recommend', 'suggest', 'advice', 'should i', 'which is better', 'which one', 'good fund', 'best fund']
+    for kw in advice_keywords:
+        if kw in message_lower:
+            return True
+    
     # Check for sensitive/PII keywords
     sensitive_keywords = ['otp', 'password', 'pin', 'login', 'sign in', 'my account', 'portfolio']
     for kw in sensitive_keywords:
