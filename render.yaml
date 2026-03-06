@@ -12,10 +12,11 @@ services:
         value: 3.11.0
     healthCheckPath: /health
 
-  - type: static
+  - type: web
     name: hdfc-mutual-fund-chatbot-frontend
+    runtime: static
     plan: free
-    buildCommand: echo "No build needed for static site"
+    buildCommand: echo "No build needed"
     staticPublishPath: ./Phase4/frontend
     routes:
       - type: rewrite
